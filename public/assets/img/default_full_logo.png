@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
+  <defs>
+    <linearGradient id="auroraGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F57C00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e66a00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- A stylisé -->
+  <text x="40" y="140" font-family="Arial Black, sans-serif" font-size="130" font-weight="900" fill="url(#auroraGrad)" letter-spacing="8">A</text>
+  <!-- Aurore en texte -->
+  <text x="140" y="140" font-family="'Cabin', Arial, sans-serif" font-size="110" font-weight="700" fill="#1a1a2e" letter-spacing="2">URORA</text>
+  <!-- Marketplace -->
+  <text x="140" y="185" font-family="Arial, sans-serif" font-size="36" font-weight="600" fill="#F57C00" letter-spacing="6">MARKETPLACE</text>
+  <!-- Accent graphique -->
+  <rect x="140" y="155" width="360" height="3" rx="1.5" fill="url(#auroraGrad)"/>
+  <!-- Petite étoile décorative -->
+  <circle cx="610" cy="80" r="4" fill="#F57C00" opacity="0.6"/>
+  <circle cx="630" cy="50" r="2.5" fill="#F57C00" opacity="0.4"/>
+  <circle cx="650" cy="95" r="3" fill="#F57C00" opacity="0.5"/>
+</svg>

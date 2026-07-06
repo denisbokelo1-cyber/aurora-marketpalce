@@ -1,0 +1,616 @@
+/* ============================================================
+   AURORA MARKETPLACE — Admin Theme Override
+   Couleur principale : Orange Aurora (#F57C00)
+   ============================================================ */
+
+/* Variables Aurora */
+* {
+    --Gray-900: #201a1a;
+    --Gray-800: #3c3737;
+    --Gray-700: #585353;
+    --Gray-600: #747070;
+    --Gray-500: #8f8c8c;
+    --Gray-400: #aba9a9;
+    --Gray-300: #c7c6c6;
+    --Gray-200: #e3e2e2;
+    --Gray-100: #ffffff;
+    --body-background: #f5f8f9;
+    --Brand-Color-Border: #28252566 40%;
+    --success-color: #34a853;
+    --primary-color: #F57C00;
+    --danger-color: #b52046;
+    --pink-color: #ff546d;
+    --info-color: #6056fa;
+    --secondary-color: #475569;
+    --warning-color: #f48900;
+    --primary-opacity: 0.1;
+    --primary-color-opacity: rgba(245, 124, 0, 0.1);
+}
+
+/* -------------------------------------------------------------------
+   BADGES - Orange Aurora
+   ------------------------------------------------------------------- */
+.bg-primary {
+    background: rgba(245, 124, 0, 0.12) !important;
+    color: #F57C00;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+    background-color: #F57C00 !important;
+    border-color: #F57C00 !important;
+    color: #fff !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+}
+
+.btn-primary.disabled {
+    background-color: #e3e2e2 !important;
+    border-color: #e3e2e2 !important;
+    color: var(--Gray-600) !important;
+}
+
+.btn-outline-primary {
+    border-color: #F57C00 !important;
+    color: #F57C00 !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #F57C00 !important;
+    border-color: #F57C00 !important;
+    color: #fff !important;
+}
+
+/* -------------------------------------------------------------------
+   SIDEBAR
+   ------------------------------------------------------------------- */
+.navbar-vertical {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.12);
+}
+
+.navbar-vertical .navbar-brand {
+    padding: 20px 24px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.navbar-vertical .navbar-brand img {
+    height: 2rem !important;
+    filter: brightness(0) invert(1);
+}
+
+.sidebar-title {
+    color: rgba(255, 255, 255, 0.4) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px;
+    padding: 20px 24px 6px !important;
+    margin: 0 !important;
+}
+
+.sidebar-title i {
+    display: none;
+}
+
+.navbar-nav .nav-item {
+    margin: 0 !important;
+}
+
+.navbar-nav .nav-item > .nav-link {
+    margin: 0 !important;
+    padding: 10px 24px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 14px;
+    font-weight: 400;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-item > .nav-link:hover {
+    color: #fff !important;
+    background: rgba(245, 124, 0, 0.08) !important;
+    border-left-color: #F57C00;
+}
+
+.navbar-vertical .navbar-nav .nav-item .nav-link.active {
+    background: rgba(245, 124, 0, 0.12) !important;
+    color: #F57C00 !important;
+    border-left: 3px solid #F57C00 !important;
+    border-right: none !important;
+    box-shadow: none !important;
+    font-weight: 600;
+}
+
+.navbar-vertical .navbar-nav .nav-item .nav-link i {
+    position: relative;
+    right: auto;
+    margin-left: auto;
+    font-size: 12px;
+}
+
+/* Sous-menus */
+.navbar-nav .nav .nav-item .nav-link {
+    padding: 8px 24px 8px 48px !important;
+    color: rgba(255, 255, 255, 0.55) !important;
+    font-size: 13px;
+}
+
+.navbar-nav .nav .nav-item .nav-link:hover {
+    color: #F57C00 !important;
+    background: rgba(245, 124, 0, 0.05);
+}
+
+.navbar-nav .nav .nav-item .nav-link .nav-link-text::before {
+    display: none;
+}
+
+.navbar-nav .nav .nav-item.active .nav-link {
+    color: #F57C00 !important;
+}
+
+/* Menu search */
+.menuSearch {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-size: 13px;
+}
+
+.menuSearch::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.menuSearch:focus {
+    border-color: #F57C00 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Scrollbar sidebar */
+.nav-scroller::-webkit-scrollbar {
+    width: 4px;
+}
+.nav-scroller::-webkit-scrollbar-thumb {
+    background: rgba(245, 124, 0, 0.3);
+    border-radius: 2px;
+}
+
+/* -------------------------------------------------------------------
+   HEADER
+   ------------------------------------------------------------------- */
+.header {
+    background-color: #fff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+#profileDropDown {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+    border-radius: 8px !important;
+    height: 40px !important;
+    padding: 4px 8px !important;
+    box-shadow: 0 2px 8px rgba(245, 124, 0, 0.25);
+}
+
+#profileDropDown .dropdown-menu {
+    border: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-radius: 8px;
+}
+
+#profileDropDown .dropdown-item:hover {
+    background: rgba(245, 124, 0, 0.06);
+    color: #F57C00 !important;
+}
+
+.notifiationDropDown {
+    background: #f5f5f5;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notifiationDropDown i {
+    color: #333;
+    font-size: 20px;
+}
+
+/* -------------------------------------------------------------------
+   FORMULAIRES
+   ------------------------------------------------------------------- */
+.form-check-input:checked {
+    background-color: #F57C00 !important;
+    border-color: #F57C00 !important;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: #F57C00 !important;
+    border-color: #F57C00 !important;
+}
+
+.form-btn {
+    background-color: #F57C00 !important;
+    color: white !important;
+}
+
+/* -------------------------------------------------------------------
+   PAGINATION
+   ------------------------------------------------------------------- */
+.page-item.active .page-link {
+    background-color: #F57C00 !important;
+    border-color: #F57C00 !important;
+    color: #fff !important;
+}
+
+/* -------------------------------------------------------------------
+   TABLEAUX
+   ------------------------------------------------------------------- */
+.breadcrumb-item.active {
+    color: #F57C00 !important;
+}
+
+/* -------------------------------------------------------------------
+   STATUTS DROPDOWN
+   ------------------------------------------------------------------- */
+.active_status {
+    background-color: #F57C00 !important;
+    color: white;
+}
+
+/* -------------------------------------------------------------------
+   BOUTONS RECHERCHE / FILTRES
+   ------------------------------------------------------------------- */
+#tableFilter,
+#tableRefresh,
+#ordertableRefresh {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+    box-shadow: 0 2px 6px rgba(245, 124, 0, 0.2);
+}
+
+#tableFilter i,
+#tableRefresh i,
+#ordertableRefresh i {
+    color: white !important;
+}
+
+.export-btn {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+    box-shadow: 0 2px 6px rgba(245, 124, 0, 0.2);
+}
+
+.export-btn i {
+    color: white !important;
+}
+
+.search-input-grp .input-group-text {
+    background: #F57C00 !important;
+    color: white !important;
+}
+
+/* -------------------------------------------------------------------
+   NOTIFICATIONS IZITOAST
+   ------------------------------------------------------------------- */
+.iziToast-color-green .iziToast-title,
+.iziToast-color-green .iziToast-message {
+    color: #F57C00;
+}
+
+/* -------------------------------------------------------------------
+   NAVIGATION ONGLETS
+   ------------------------------------------------------------------- */
+.nav-pills .nav-link.active {
+    background-color: rgba(245, 124, 0, 0.1);
+    color: #F57C00 !important;
+}
+
+.nav-pills .nav-link.active.border {
+    border-color: #F57C00 !important;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #F57C00 !important;
+    border-color: #F57C00 !important;
+    color: #fff !important;
+}
+
+/* -------------------------------------------------------------------
+   CARTES STATISTIQUES (Dashboard)
+   ------------------------------------------------------------------- */
+.overview-data .info-box .primary-icon {
+    background: #F57C00;
+}
+
+.view_all {
+    color: #F57C00 !important;
+}
+
+.setting_icons_div {
+    background: #F57C00;
+}
+
+/* -------------------------------------------------------------------
+   LIENS ACTIFS
+   ------------------------------------------------------------------- */
+a.active {
+    color: #F57C00 !important;
+}
+
+/* -------------------------------------------------------------------
+   SWEETALERT
+   ------------------------------------------------------------------- */
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+}
+
+/* -------------------------------------------------------------------
+   STEMMER (product add)
+   ------------------------------------------------------------------- */
+#progressbar .step0:before,
+#store_progressbar .step0:before {
+    color: #F57C00;
+}
+
+#progressbar li.active:before,
+#store_progressbar li.active:before {
+    border: 2px solid #F57C00;
+}
+
+/* -------------------------------------------------------------------
+   ACCORDÉON
+   ------------------------------------------------------------------- */
+.accordion-button:not(.collapsed) {
+    color: #F57C00 !important;
+}
+
+.accordion-button:focus {
+    border-color: #F57C00 !important;
+}
+
+/* -------------------------------------------------------------------
+   BADGE VERSION FOOTER
+   ------------------------------------------------------------------- */
+.footer-version-badge {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+    color: white;
+}
+
+/* -------------------------------------------------------------------
+   PROGRESS BARS
+   ------------------------------------------------------------------- */
+.progress-bar-primary {
+    background-color: #F57C00;
+}
+
+/* -------------------------------------------------------------------
+   SIDEBAR SCROLLBAR
+   ------------------------------------------------------------------- */
+.slimScrollBar {
+    background: #F57C00 !important;
+}
+
+/* -------------------------------------------------------------------
+   CHART ACTIVE
+   ------------------------------------------------------------------- */
+.chart-action li a.active {
+    background: #F57C00 !important;
+    color: #fff !important;
+}
+
+/* -------------------------------------------------------------------
+   TICKET CHAT
+   ------------------------------------------------------------------- */
+.direct-chat-msg.left > .direct-chat-text {
+    background: #F57C00;
+}
+
+/* -------------------------------------------------------------------
+   AFFILIATE STEPPER
+   ------------------------------------------------------------------- */
+.affiliate_step.completed .circle {
+    background-color: #F57C00;
+    border-color: #F57C00;
+}
+
+.affiliate_step.active .circle {
+    border-color: #F57C00;
+}
+
+.affiliate_step.completed ~ .bar {
+    background-color: #F57C00;
+}
+
+/* -------------------------------------------------------------------
+   MULTI LANGUAGE BULK SUBTITLE
+   ------------------------------------------------------------------- */
+.sub_title {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: var(--Gray-600);
+}
+
+/* -------------------------------------------------------------------
+   CARDS HOVER (Settings)
+   ------------------------------------------------------------------- */
+.rotate_icon_card,
+.flip_icon_card,
+.jingle_icon_card {
+    background: linear-gradient(to left, #F57C00 50%, white 50%);
+    background-size: 200% 100%;
+    transition: background-position 0.5s;
+}
+
+/* -------------------------------------------------------------------
+   LOGIN PAGE
+   ------------------------------------------------------------------- */
+.login_button {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+    border-color: #F57C00 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(245, 124, 0, 0.3) !important;
+    transition: all 0.3s ease;
+}
+
+.login_button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(245, 124, 0, 0.4) !important;
+}
+
+.credential_copy_box {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+}
+
+.login-img-box {
+    max-height: 80px;
+}
+
+.login-card {
+    border: 0;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+    border-radius: 12px;
+}
+
+/* -------------------------------------------------------------------
+   VENDEUR INSCRIPTION
+   ------------------------------------------------------------------- */
+.seller_register_button {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+    border-color: #F57C00 !important;
+    box-shadow: 0 4px 12px rgba(245, 124, 0, 0.3) !important;
+}
+
+/* -------------------------------------------------------------------
+   GLOBAL CARD
+   ------------------------------------------------------------------- */
+.card {
+    border: 0 !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04) !important;
+    border-radius: 8px !important;
+    transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
+}
+
+/* -------------------------------------------------------------------
+   TABLE HEADER
+   ------------------------------------------------------------------- */
+thead tr {
+    background: #f8f9fa;
+}
+
+/* -------------------------------------------------------------------
+   SIDEBAR BRAND LOGO
+   ------------------------------------------------------------------- */
+.navbar-vertical .navbar-brand img {
+    max-width: 140px;
+    max-height: 32px;
+}
+
+/* -------------------------------------------------------------------
+   RESET BUTTON
+   ------------------------------------------------------------------- */
+.reset_button,
+.reset_button:focus {
+    border-color: #201a1a !important;
+    color: #201a1a !important;
+    border-radius: 4px !important;
+}
+
+/* -------------------------------------------------------------------
+   TOOLTIP
+   ------------------------------------------------------------------- */
+.tooltip-inner {
+    background: #F57C00;
+}
+
+.bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
+    border-top-color: #F57C00;
+}
+
+/* -------------------------------------------------------------------
+   PRODUCT SPECIAL PRICE
+   ------------------------------------------------------------------- */
+.special_price {
+    color: #F57C00 !important;
+}
+
+/* -------------------------------------------------------------------
+   TABS SMTP
+   ------------------------------------------------------------------- */
+.nav-tabs .sms_gateway_tab.active {
+    color: #F57C00 !important;
+}
+
+/* -------------------------------------------------------------------
+   LANGUAGES
+   ------------------------------------------------------------------- */
+.language-nav-link {
+    color: #F57C00 !important;
+}
+
+/* -------------------------------------------------------------------
+   STATISTICS BOX COLORS
+   ------------------------------------------------------------------- */
+.total_box.store_total {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+}
+
+.total_box.order_total {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+}
+
+.total_box.products_total {
+    background: linear-gradient(135deg, #f4a51c, #F57C00) !important;
+}
+
+.total_box.total_earnings {
+    background: linear-gradient(135deg, #201a1a, #3c3737) !important;
+}
+
+/* -------------------------------------------------------------------
+   DASHBOARD ICONS
+   ------------------------------------------------------------------- */
+.overview-data .info-box .success-icon {
+    background: #F57C00 !important;
+}
+
+.overview-data .info-box .warning-icon {
+    background: #F57C00 !important;
+}
+
+.overview-data .info-box .danger-icon {
+    background: #e66a00 !important;
+}
+
+/* -------------------------------------------------------------------
+   CHART TOOLBAR
+   ------------------------------------------------------------------- */
+.sale-tabs li a.active {
+    background: #F57C00 !important;
+    color: #fff;
+}
+
+/* -------------------------------------------------------------------
+   FOOTER
+   ------------------------------------------------------------------- */
+.footer .copyright a {
+    color: #F57C00;
+}
+
+/* -------------------------------------------------------------------
+   LANGUAGE BADGE
+   ------------------------------------------------------------------- */
+.badge.bg-primary {
+    background: linear-gradient(135deg, #F57C00, #e66a00) !important;
+}

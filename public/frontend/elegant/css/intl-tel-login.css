@@ -1,0 +1,39 @@
+/* intl-tel-input container full width */
+.iti {
+    width: 100% !important;
+    display: block !important;
+}
+
+.iti input {
+    width: 100% !important;
+}
+
+/* RTL Support for intl-tel-input */
+.rtl-layout .iti {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    width: 100% !important;
+}
+
+.rtl-layout .iti input[type="tel"] {
+    direction: rtl;
+    text-align: right;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    flex-grow: 1;
+}
+
+.rtl-layout .iti .iti__flag-container {
+    order: -1;
+    border-radius: 0 4px 4px 0;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.rtl-layout .iti .iti__selected-flag {
+    border-radius: 0 4px 4px 0 !important;
+}
+
+.rtl-layout .iti input[type="tel"]::placeholder {
+    text-align: right;
+}
