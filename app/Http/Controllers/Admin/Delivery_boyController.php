@@ -274,17 +274,46 @@ class Delivery_boyController extends Controller
                 'quality' => 90
             ]);
             $delete_url = route('delivery_boys.destroy', $b->id);
+            $approve_url = route('admin.delivery_boy.approve', $b->id);
+            $reject_url = route('admin.delivery_boy.reject', $b->id);
+            $reset_pwd_url = route('admin.delivery_boy.reset_password', $b->id);
+            $show_url = route('admin.delivery_boys.show', $b->id);
+            
+            // Determine approval status display
+            $isApproved = $b->is_approved ?? 0;
+            if ($isApproved == 1) {
+                $approvalBadge = '<span class="badge bg-success">' . labels('admin_labels.approved', 'Approved') . '</span>';
+            } elseif ($isApproved == 2) {
+                $approvalBadge = '<span class="badge bg-danger">' . labels('admin_labels.rejected', 'Rejected') . '</span>';
+            } else {
+                $approvalBadge = '<span class="badge bg-warning text-dark">' . labels('admin_labels.pending', 'Pending') . '</span>';
+            }
+            $b->is_approved_badge = $approvalBadge;
+            
+            // Build action buttons based on approval status
             $action = '<div class="dropdown bootstrap-table-dropdown">
                 <a href="#" class="text-dark" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="bx bx-dots-horizontal-rounded"></i>
                 </a>
                 <div class="dropdown-menu table_dropdown order_action_dropdown" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item dropdown_menu_items edit_delivery_boy" data-id="' . $b->id . '" data-bs-toggle="modal" data-bs-target="#edit_delivery_boy"><i class="bx bx-pencil mx-2"></i> ' . labels('admin_labels.edit', 'Edit') . '</a>
-                    <a class="dropdown-item delete-data dropdown_menu_items" data-url="' . $delete_url . '"><i class="bx bx-trash mx-2"></i>' . labels('admin_labels.delete', 'Delete') . '</a>
-                    <a class="dropdown-item fund_transfer dropdown_menu_items"  data-bs-target="#fund_transfer_delivery_boy" data-bs-toggle="modal" data-id="' . $b->id . '" ><i class="bx bx-right-arrow-alt mx-2"></i> ' . labels('admin_labels.fund_transfer', 'Fund Transfer') . '</a>
+                    <a class="dropdown-item dropdown_menu_items" href="' . $show_url . '"><i class="bx bx-show mx-2"></i> ' . labels('admin_labels.view', 'View') . '</a>
+                    <a class="dropdown-item dropdown_menu_items edit_delivery_boy" data-id="' . $b->id . '" data-bs-toggle="modal" data-bs-target="#edit_delivery_boy"><i class="bx bx-pencil mx-2"></i> ' . labels('admin_labels.edit', 'Edit') . '</a>';
+            
+            // Show Approve/Reject only when pending (is_approved = 0 or null)
+            if (!$isApproved || $isApproved == 0) {
+                $action .= '<div class="dropdown-divider"></div>
+                    <a class="dropdown-item dropdown_menu_items approve-delivery-boy text-success" data-id="' . $b->id . '" href="javascript:void(0)"><i class="bx bx-check-circle mx-2"></i> ' . labels('admin_labels.approve', 'Approve') . '</a>
+                    <a class="dropdown-item dropdown_menu_items reject-delivery-boy text-danger" data-id="' . $b->id . '" href="javascript:void(0)"><i class="bx bx-x-circle mx-2"></i> ' . labels('admin_labels.reject', 'Reject') . '</a>';
+            }
+            
+            $action .= '<div class="dropdown-divider"></div>
+                    <a class="dropdown-item dropdown_menu_items delete-data" data-url="' . $delete_url . '"><i class="bx bx-trash mx-2"></i>' . labels('admin_labels.delete', 'Delete') . '</a>
+                    <a class="dropdown-item dropdown_menu_items fund_transfer" data-bs-target="#fund_transfer_delivery_boy" data-bs-toggle="modal" data-id="' . $b->id . '"><i class="bx bx-right-arrow-alt mx-2"></i> ' . labels('admin_labels.fund_transfer', 'Fund Transfer') . '</a>
+                    <a class="dropdown-item dropdown_menu_items reset-password-delivery-boy" data-id="' . $b->id . '" href="javascript:void(0)"><i class="bx bx-key mx-2"></i> ' . labels('admin_labels.reset_password', 'Reset Password') . '</a>
                 </div>
             </div>';
-            // Always show status toggle so admin can activate/deactivate delivery boy
+            
+            // Status toggle
             $b->status = '<select class="form-select status_dropdown change_toggle_status ' . ($b->status == 1 ? 'active_status' : 'inactive_status') . '" data-id="' . $b->id . '" data-url="/admin/delivery_boy/update_status/' . $b->id . '" aria-label="">
                     <option value="1" ' . ($b->status == 1 ? 'selected' : '') . '>' . labels('admin_labels.active', 'Active') . '</option>
                     <option value="0" ' . ($b->status == 0 ? 'selected' : '') . '>' . labels('admin_labels.deactive', 'Deactive') . '</option>

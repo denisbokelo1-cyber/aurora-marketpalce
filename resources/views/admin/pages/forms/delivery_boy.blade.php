@@ -950,6 +950,9 @@
                                         <th data-field="back_licence_image" data-sortable="true" data-visible="false">
                                             {{ labels('admin_labels.driving_licence_back_image', 'Driving Licence Back Image') }}
                                         </th>
+                                        <th data-field="is_approved_badge" data-sortable="false">
+                                            {{ labels('admin_labels.approval', 'Approbation') }}
+                                        </th>
                                         <th data-field="status">
                                             {{ labels('admin_labels.status', 'Statut') }}
                                         </th>
