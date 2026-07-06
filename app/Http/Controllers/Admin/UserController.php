@@ -100,18 +100,40 @@ class UserController extends Controller
         $formFields['mobile'] = $mobile;
         $formFields['country_code'] = '243';
 
-        // Find user manually — handles +243 or 243 prefix in DB
+        // Find user — flexible search: match mobile + any country_code, or mobile alone
+        // This handles cases where country_code may be NULL, '243', '+243', '' etc.
         $user = User::where('mobile', $mobile)
-            ->where(function ($q) {
-                $q->where('country_code', '243')
-                  ->orWhere('country_code', '+243');
-            })
             ->where('active', 1)
             ->first();
 
+        // If not found, try with leading '0' (local format stored in DB)
+        if (!$user) {
+            $user = User::where('mobile', '0' . $mobile)
+                ->where('active', 1)
+                ->first();
+        }
+
+        // If still not found, try with '+243' prefix in DB
+        if (!$user) {
+            $user = User::where('mobile', '+243' . $mobile)
+                ->where('active', 1)
+                ->first();
+        }
+
+        // If still not found, try with '243' prefix in DB
+        if (!$user) {
+            $user = User::where('mobile', '243' . $mobile)
+                ->where('active', 1)
+                ->first();
+        }
+
         \Illuminate\Support\Facades\Log::info('AUTH_DEBUG user lookup', [
+            'input_mobile' => $request->input('mobile'),
+            'normalized_mobile' => $mobile,
             'user_found' => $user ? true : false,
             'user_id' => $user ? $user->id : null,
+            'db_mobile' => $user ? $user->mobile : null,
+            'db_country_code' => $user ? $user->country_code : null,
             'user_role_id' => $user ? $user->role_id : null,
             'user_role' => $user ? $user->role : null,
             'hash_check' => $user ? Hash::check($formFields['password'], $user->password) : false,
