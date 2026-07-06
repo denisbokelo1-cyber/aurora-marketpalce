@@ -16,3 +16,12 @@ yarn.lock
 .DS_Store
 /phpunit.xml
 /.phpunit.cache
+
+# Production build & cache
+/public/build
+/public/hot
+/bootstrap/cache/*
+/storage/debugbar/*
+/storage/dotenv-editor/*
+!/storage/debugbar/.gitignore
+!/storage/dotenv-editor/.gitignore
