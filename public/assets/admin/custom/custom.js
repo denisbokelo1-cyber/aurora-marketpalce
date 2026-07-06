@@ -4994,40 +4994,39 @@ $(document).on("click", ".approve-delivery-boy", function (e) {
     Swal.fire({
         title: "Are you sure?",
         text: "You want to approve this delivery boy?",
-        type: "warning",
+        icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#28a745",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, approve!",
         showLoaderOnConfirm: true,
         preConfirm: function () {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    data: {
-                        _token: $('meta[name="csrf-token"]').attr("content"),
-                    },
-                    dataType: "json",
-                })
-                .done(function (response) {
-                    if (response.error === false || response.message) {
-                        Swal.fire("Approved!", response.message, "success");
-                        $(".table").bootstrapTable("refresh");
-                    } else {
-                        Swal.fire("Error", response.message || "Something went wrong", "error");
-                    }
-                })
-                .fail(function (jqXHR) {
-                    var msg = "Something went wrong!";
-                    if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-                        msg = jqXHR.responseJSON.message;
-                    }
-                    Swal.fire("Error", msg, "error");
-                });
+            return $.ajax({
+                method: "POST",
+                url: url,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+            }).then(function (response) {
+                if (response.error === false || response.message) {
+                    return response;
+                }
+                throw new Error(response.message || "Something went wrong");
+            }, function (jqXHR) {
+                var msg = "Something went wrong!";
+                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                    msg = jqXHR.responseJSON.message;
+                }
+                throw new Error(msg);
             });
         },
         allowOutsideClick: false,
+    }).then(function (result) {
+        if (result.value) {
+            Swal.fire("Approved!", result.value.message || "Delivery Boy approved successfully.", "success");
+            $(".table").bootstrapTable("refresh");
+        }
     });
 });
 
@@ -5038,40 +5037,39 @@ $(document).on("click", ".reject-delivery-boy", function (e) {
     Swal.fire({
         title: "Are you sure?",
         text: "You want to reject this delivery boy?",
-        type: "warning",
+        icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#dc3545",
         cancelButtonColor: "#6c757d",
         confirmButtonText: "Yes, reject!",
         showLoaderOnConfirm: true,
         preConfirm: function () {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    data: {
-                        _token: $('meta[name="csrf-token"]').attr("content"),
-                    },
-                    dataType: "json",
-                })
-                .done(function (response) {
-                    if (response.error === false || response.message) {
-                        Swal.fire("Rejected!", response.message, "success");
-                        $(".table").bootstrapTable("refresh");
-                    } else {
-                        Swal.fire("Error", response.message || "Something went wrong", "error");
-                    }
-                })
-                .fail(function (jqXHR) {
-                    var msg = "Something went wrong!";
-                    if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-                        msg = jqXHR.responseJSON.message;
-                    }
-                    Swal.fire("Error", msg, "error");
-                });
+            return $.ajax({
+                method: "POST",
+                url: url,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+            }).then(function (response) {
+                if (response.error === false || response.message) {
+                    return response;
+                }
+                throw new Error(response.message || "Something went wrong");
+            }, function (jqXHR) {
+                var msg = "Something went wrong!";
+                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                    msg = jqXHR.responseJSON.message;
+                }
+                throw new Error(msg);
             });
         },
         allowOutsideClick: false,
+    }).then(function (result) {
+        if (result.value) {
+            Swal.fire("Rejected!", result.value.message || "Delivery Boy rejected successfully.", "success");
+            $(".table").bootstrapTable("refresh");
+        }
     });
 });
 

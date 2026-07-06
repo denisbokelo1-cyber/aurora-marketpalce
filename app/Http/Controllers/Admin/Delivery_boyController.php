@@ -792,13 +792,7 @@ class Delivery_boyController extends Controller
      */
     public function show($id)
     {
-        $delivery_boy = User::withTrashed()->find($id);
-        if (!$delivery_boy) {
-            if (request()->ajax()) {
-                return response()->json(['error' => true, 'message' => 'Delivery boy not found.'], 404);
-            }
-            abort(404);
-        }
+        $delivery_boy = User::findOrFail($id);
         if (request()->ajax()) {
             return response()->json($delivery_boy);
         }
