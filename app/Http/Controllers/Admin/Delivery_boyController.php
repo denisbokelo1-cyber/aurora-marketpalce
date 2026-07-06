@@ -742,24 +742,37 @@ class Delivery_boyController extends Controller
      */
     public function approve($id)
     {
-        $delivery_boy = Deliveryboy::find($id);
-        if (!$delivery_boy) {
-            return response()->json(['error' => true, 'message' => 'Delivery boy not found.'], 404);
-        }
-        $delivery_boy->is_approved = 1;
-        $delivery_boy->status = 1;
-        $delivery_boy->active = 1;
-        $delivery_boy->save();
+        \Illuminate\Support\Facades\Log::info('DIAGNOSTIC_APPROVE_START', ['id' => $id, 'method' => request()->method(), 'ajax' => request()->ajax(), 'wants_json' => request()->wantsJson(), 'header_accept' => request()->header('Accept')]);
+        try {
+            // Use User model directly (Deliveryboy extends Model but table may have issues)
+            $delivery_boy = User::where('role_id', 3)->where('id', $id)->first();
+            if (!$delivery_boy) {
+                return response()->json(['error' => true, 'message' => 'Delivery boy not found.'], 404);
+            }
+            $delivery_boy->is_approved = 1;
+            $delivery_boy->status = 1;
+            $delivery_boy->active = 1;
+            $delivery_boy->save();
+            \Illuminate\Support\Facades\Log::info('DIAGNOSTIC_APPROVE_SAVED', ['id' => $id, 'is_approved' => $delivery_boy->is_approved, 'user_id' => $delivery_boy->id]);
 
-        Log::info('Delivery boy approved', ['id' => $id, 'name' => $delivery_boy->username]);
-
-        if (request()->ajax()) {
+            // ALWAYS return JSON - the request is XHR from AJAX
             return response()->json([
                 'error' => false,
-                'message' => labels('admin_labels.delivery_boy_approved_successfully', 'Delivery Boy approved successfully.')
+                'message' => labels('admin_labels.delivery_boy_approved_successfully', 'Livreur approuvé avec succès.')
             ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('DIAGNOSTIC_APPROVE_EXCEPTION', [
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
         }
-        return redirect()->back()->with('success', 'Delivery Boy approved successfully.');
     }
 
     /**
@@ -767,24 +780,37 @@ class Delivery_boyController extends Controller
      */
     public function reject($id)
     {
-        $delivery_boy = Deliveryboy::find($id);
-        if (!$delivery_boy) {
-            return response()->json(['error' => true, 'message' => 'Delivery boy not found.'], 404);
-        }
-        $delivery_boy->is_approved = 2;
-        $delivery_boy->status = 0;
-        $delivery_boy->active = 0;
-        $delivery_boy->save();
+        \Illuminate\Support\Facades\Log::info('DIAGNOSTIC_REJECT_START', ['id' => $id, 'method' => request()->method(), 'ajax' => request()->ajax()]);
+        try {
+            $delivery_boy = Deliveryboy::find($id);
+            if (!$delivery_boy) {
+                return response()->json(['error' => true, 'message' => 'Delivery boy not found.'], 404);
+            }
+            $delivery_boy->is_approved = 2;
+            $delivery_boy->status = 0;
+            $delivery_boy->active = 0;
+            $delivery_boy->save();
+            \Illuminate\Support\Facades\Log::info('DIAGNOSTIC_REJECT_SAVED', ['id' => $id, 'is_approved' => $delivery_boy->is_approved]);
 
-        Log::info('Delivery boy rejected', ['id' => $id, 'name' => $delivery_boy->username]);
-
-        if (request()->ajax()) {
-            return response()->json([
-                'error' => false,
-                'message' => labels('admin_labels.delivery_boy_rejected_successfully', 'Delivery Boy rejected successfully.')
+            if (request()->ajax()) {
+                return response()->json([
+                    'error' => false,
+                    'message' => labels('admin_labels.delivery_boy_rejected_successfully', 'Livreur rejeté.')
+                ]);
+            }
+            \Illuminate\Support\Facades\Log::info('DIAGNOSTIC_REJECT_NOT_AJAX', ['id' => $id]);
+            return redirect()->back()->with('success', 'Delivery Boy rejected successfully.');
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('DIAGNOSTIC_REJECT_EXCEPTION', [
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
         }
-        return redirect()->back()->with('success', 'Delivery Boy rejected successfully.');
     }
 
     /**

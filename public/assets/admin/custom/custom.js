@@ -4989,9 +4989,14 @@ $(document).on("change", "#deliverable_type", function () {
 // ============================================================
 $(document).on("click", ".approve-delivery-boy", function (e) {
     e.preventDefault();
+    console.log("[DEBUG] Approve button clicked");
     var $btn = $(this);
     var url = $btn.data("url");
-    if (!url) return;
+    console.log("[DEBUG] Approve URL:", url);
+    if (!url) {
+        console.error("[DEBUG] No URL found on button");
+        return;
+    }
     Swal.fire({
         title: "Are you sure?",
         text: "You want to approve this delivery boy?",
@@ -5002,29 +5007,39 @@ $(document).on("click", ".approve-delivery-boy", function (e) {
         confirmButtonText: "Yes, approve!",
         showLoaderOnConfirm: true,
         preConfirm: function () {
-            return $.ajax({
-                method: "POST",
-                url: url,
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr("content"),
-                },
-                dataType: "json",
-            }).then(function (response) {
-                if (response.error === false || response.message) {
-                    return response;
-                }
-                throw new Error(response.message || "Something went wrong");
-            }, function (jqXHR) {
-                var msg = "Something went wrong!";
-                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-                    msg = jqXHR.responseJSON.message;
-                }
-                throw new Error(msg);
+            console.log("[DEBUG] preConfirm called, sending AJAX to:", url);
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log("[DEBUG] AJAX SUCCESS:", response);
+                        if (response.error === false || response.message) {
+                            resolve(response);
+                        } else {
+                            reject(new Error(response.message || "Something went wrong"));
+                        }
+                    },
+                    error: function (jqXHR) {
+                        console.log("[DEBUG] AJAX ERROR:", jqXHR.status, jqXHR.responseText);
+                        var msg = "Something went wrong!";
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                            msg = jqXHR.responseJSON.message;
+                        }
+                        reject(new Error(msg));
+                    }
+                });
             });
         },
         allowOutsideClick: false,
     }).then(function (result) {
+        console.log("[DEBUG] Swal resolved:", result);
         if (result.value) {
+            console.log("[DEBUG] Showing approved success message");
             Swal.fire("Approved!", result.value.message || "Delivery Boy approved successfully.", "success");
             $(".table").bootstrapTable("refresh");
         }
@@ -5033,9 +5048,14 @@ $(document).on("click", ".approve-delivery-boy", function (e) {
 
 $(document).on("click", ".reject-delivery-boy", function (e) {
     e.preventDefault();
+    console.log("[DEBUG] Reject button clicked");
     var $btn = $(this);
     var url = $btn.data("url");
-    if (!url) return;
+    console.log("[DEBUG] Reject URL:", url);
+    if (!url) {
+        console.error("[DEBUG] No URL found on button");
+        return;
+    }
     Swal.fire({
         title: "Are you sure?",
         text: "You want to reject this delivery boy?",
@@ -5046,29 +5066,39 @@ $(document).on("click", ".reject-delivery-boy", function (e) {
         confirmButtonText: "Yes, reject!",
         showLoaderOnConfirm: true,
         preConfirm: function () {
-            return $.ajax({
-                method: "POST",
-                url: url,
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr("content"),
-                },
-                dataType: "json",
-            }).then(function (response) {
-                if (response.error === false || response.message) {
-                    return response;
-                }
-                throw new Error(response.message || "Something went wrong");
-            }, function (jqXHR) {
-                var msg = "Something went wrong!";
-                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-                    msg = jqXHR.responseJSON.message;
-                }
-                throw new Error(msg);
+            console.log("[DEBUG] preConfirm called, sending AJAX to:", url);
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log("[DEBUG] AJAX SUCCESS:", response);
+                        if (response.error === false || response.message) {
+                            resolve(response);
+                        } else {
+                            reject(new Error(response.message || "Something went wrong"));
+                        }
+                    },
+                    error: function (jqXHR) {
+                        console.log("[DEBUG] AJAX ERROR:", jqXHR.status, jqXHR.responseText);
+                        var msg = "Something went wrong!";
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                            msg = jqXHR.responseJSON.message;
+                        }
+                        reject(new Error(msg));
+                    }
+                });
             });
         },
         allowOutsideClick: false,
     }).then(function (result) {
+        console.log("[DEBUG] Swal resolved:", result);
         if (result.value) {
+            console.log("[DEBUG] Showing rejected success message");
             Swal.fire("Rejected!", result.value.message || "Delivery Boy rejected successfully.", "success");
             $(".table").bootstrapTable("refresh");
         }
