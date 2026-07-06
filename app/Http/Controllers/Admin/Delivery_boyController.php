@@ -303,8 +303,8 @@ class Delivery_boyController extends Controller
             // Show Approve/Reject only when pending (is_approved = 0 or null)
             if (!$isApproved || $isApproved == 0) {
                 $action .= '<div class="dropdown-divider"></div>
-                    <a class="dropdown-item dropdown_menu_items approve-delivery-boy text-success" data-id="' . $b->id . '" href="javascript:void(0)"><i class="bx bx-check-circle mx-2"></i> ' . labels('admin_labels.approve', 'Approve') . '</a>
-                    <a class="dropdown-item dropdown_menu_items reject-delivery-boy text-danger" data-id="' . $b->id . '" href="javascript:void(0)"><i class="bx bx-x-circle mx-2"></i> ' . labels('admin_labels.reject', 'Reject') . '</a>';
+                    <a class="dropdown-item dropdown_menu_items approve-delivery-boy text-success" data-id="' . $b->id . '" data-url="' . $approve_url . '" href="javascript:void(0)"><i class="bx bx-check-circle mx-2"></i> ' . labels('admin_labels.approve', 'Approve') . '</a>
+                    <a class="dropdown-item dropdown_menu_items reject-delivery-boy text-danger" data-id="' . $b->id . '" data-url="' . $reject_url . '" href="javascript:void(0)"><i class="bx bx-x-circle mx-2"></i> ' . labels('admin_labels.reject', 'Reject') . '</a>';
             }
             
             $action .= '<div class="dropdown-divider"></div>

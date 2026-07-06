@@ -118,7 +118,7 @@ iziToast.settings({
     position: "topRight",
 });
 
-var appUrl = document.getElementById("app_url").dataset.appUrl;
+var appUrl = (document.getElementById("app_url") && document.getElementById("app_url").dataset.appUrl) || '';
 var from = "admin";
 if (
     window.location.href.indexOf("seller/") > -1 &&
@@ -4989,8 +4989,9 @@ $(document).on("change", "#deliverable_type", function () {
 // ============================================================
 $(document).on("click", ".approve-delivery-boy", function (e) {
     e.preventDefault();
-    var id = $(this).data("id");
-    var url = appUrl + "admin/delivery_boy/approve/" + id;
+    var $btn = $(this);
+    var url = $btn.data("url");
+    if (!url) return;
     Swal.fire({
         title: "Are you sure?",
         text: "You want to approve this delivery boy?",
@@ -5032,8 +5033,9 @@ $(document).on("click", ".approve-delivery-boy", function (e) {
 
 $(document).on("click", ".reject-delivery-boy", function (e) {
     e.preventDefault();
-    var id = $(this).data("id");
-    var url = appUrl + "admin/delivery_boy/reject/" + id;
+    var $btn = $(this);
+    var url = $btn.data("url");
+    if (!url) return;
     Swal.fire({
         title: "Are you sure?",
         text: "You want to reject this delivery boy?",
