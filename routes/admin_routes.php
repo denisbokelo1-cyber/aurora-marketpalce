@@ -679,7 +679,8 @@ Route::group(
         Route::resource("admin/delivery_boys", Delivery_boyController::class)->names([
             'index' => 'delivery_boys.index',
             'edit' => 'admin.delivery_boys.edit',
-        ])->except('show')->middleware('CheckDefaultStore');
+            'show' => 'admin.delivery_boys.show',
+        ])->middleware('CheckDefaultStore');
 
         Route::post("admin/delivery_boys", [Delivery_boyController::class, 'store'])->name('delivery_boys.store')->middleware(['demo_restriction'])->middleware('permissions:create delivery_boy');
 
@@ -690,6 +691,13 @@ Route::group(
         Route::get('delivery_boys/destroy/{id}', [Delivery_boyController::class, 'destroy'])->name('delivery_boys.destroy')->middleware(['demo_restriction'])->middleware('permissions:delete delivery_boy');
 
         Route::get('admin/delivery_boy/update_status/{id}', [Delivery_boyController::class, 'update_status'])->middleware(['demo_restriction'])->middleware('permissions:edit delivery_boy');
+
+        // Approve/Reject delivery boy
+        Route::post('admin/delivery_boy/approve/{id}', [Delivery_boyController::class, 'approve'])->name('admin.delivery_boy.approve')->middleware(['demo_restriction'])->middleware('permissions:edit delivery_boy');
+        Route::post('admin/delivery_boy/reject/{id}', [Delivery_boyController::class, 'reject'])->name('admin.delivery_boy.reject')->middleware(['demo_restriction'])->middleware('permissions:edit delivery_boy');
+
+        // Reset password
+        Route::post('admin/delivery_boy/reset_password/{id}', [Delivery_boyController::class, 'resetPassword'])->name('admin.delivery_boy.reset_password')->middleware(['demo_restriction'])->middleware('permissions:edit delivery_boy');
 
         // zipcodes
 

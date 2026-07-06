@@ -20,6 +20,9 @@ use App\Services\TranslationService;
 use App\Traits\HandlesValidation;
 use App\Services\MediaService;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class Delivery_boyController extends Controller
 {
@@ -702,5 +705,97 @@ class Delivery_boyController extends Controller
                 ]);
             }
         }
+    }
+
+    /**
+     * Approve a delivery boy (is_approved = 1)
+     */
+    public function approve($id)
+    {
+        $delivery_boy = Deliveryboy::find($id);
+        if (!$delivery_boy) {
+            return response()->json(['error' => true, 'message' => 'Delivery boy not found.'], 404);
+        }
+        $delivery_boy->is_approved = 1;
+        $delivery_boy->status = 1;
+        $delivery_boy->active = 1;
+        $delivery_boy->save();
+
+        Log::info('Delivery boy approved', ['id' => $id, 'name' => $delivery_boy->username]);
+
+        if (request()->ajax()) {
+            return response()->json([
+                'error' => false,
+                'message' => labels('admin_labels.delivery_boy_approved_successfully', 'Delivery Boy approved successfully.')
+            ]);
+        }
+        return redirect()->back()->with('success', 'Delivery Boy approved successfully.');
+    }
+
+    /**
+     * Reject a delivery boy (is_approved = 2)
+     */
+    public function reject($id)
+    {
+        $delivery_boy = Deliveryboy::find($id);
+        if (!$delivery_boy) {
+            return response()->json(['error' => true, 'message' => 'Delivery boy not found.'], 404);
+        }
+        $delivery_boy->is_approved = 2;
+        $delivery_boy->status = 0;
+        $delivery_boy->active = 0;
+        $delivery_boy->save();
+
+        Log::info('Delivery boy rejected', ['id' => $id, 'name' => $delivery_boy->username]);
+
+        if (request()->ajax()) {
+            return response()->json([
+                'error' => false,
+                'message' => labels('admin_labels.delivery_boy_rejected_successfully', 'Delivery Boy rejected successfully.')
+            ]);
+        }
+        return redirect()->back()->with('success', 'Delivery Boy rejected successfully.');
+    }
+
+    /**
+     * Show delivery boy details
+     */
+    public function show($id)
+    {
+        $delivery_boy = User::withTrashed()->find($id);
+        if (!$delivery_boy) {
+            if (request()->ajax()) {
+                return response()->json(['error' => true, 'message' => 'Delivery boy not found.'], 404);
+            }
+            abort(404);
+        }
+        if (request()->ajax()) {
+            return response()->json($delivery_boy);
+        }
+        return view('admin.pages.forms.delivery_boy_view', compact('delivery_boy'));
+    }
+
+    /**
+     * Reset delivery boy password
+     */
+    public function resetPassword(Request $request, $id)
+    {
+        $request->validate(['password' => 'required|min:6|confirmed']);
+        $delivery_boy = Deliveryboy::find($id);
+        if (!$delivery_boy) {
+            return response()->json(['error' => true, 'message' => 'Delivery boy not found.'], 404);
+        }
+        $delivery_boy->password = bcrypt($request->password);
+        $delivery_boy->save();
+
+        Log::info('Delivery boy password reset', ['id' => $id]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'error' => false,
+                'message' => labels('admin_labels.password_reset_successfully', 'Password reset successfully.')
+            ]);
+        }
+        return redirect()->back()->with('success', 'Password reset successfully.');
     }
 }
