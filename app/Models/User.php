@@ -53,6 +53,8 @@ class User extends Authenticatable implements HasMedia
         'city',
         'pincode',
         'is_available',
+        'is_approved',
+        'approval_status',
     ];
 
     /**

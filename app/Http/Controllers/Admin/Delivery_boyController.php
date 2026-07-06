@@ -98,6 +98,7 @@ class Delivery_boyController extends Controller
         if (!File::exists($storeImgPath)) {
             File::makeDirectory($storeImgPath, 0755, true);
         }
+        $data['is_approved'] = 0;
         $data['serviceable_zones'] = is_array($request->serviceable_zones) ? implode(',', $request->serviceable_zones) : $request->serviceable_zones;
 
         $media_storage_settings = fetchDetails(StorageType::class, ['is_default' => 1], '*');
@@ -313,7 +314,7 @@ class Delivery_boyController extends Controller
                 </div>
             </div>';
             
-            // Status toggle
+            // Status toggle - now only manages active/deactive, NOT approval
             $b->status = '<select class="form-select status_dropdown change_toggle_status ' . ($b->status == 1 ? 'active_status' : 'inactive_status') . '" data-id="' . $b->id . '" data-url="/admin/delivery_boy/update_status/' . $b->id . '" aria-label="">
                     <option value="1" ' . ($b->status == 1 ? 'selected' : '') . '>' . labels('admin_labels.active', 'Active') . '</option>
                     <option value="0" ' . ($b->status == 0 ? 'selected' : '') . '>' . labels('admin_labels.deactive', 'Deactive') . '</option>

@@ -157,6 +157,22 @@ class UserController extends Controller
                 }
 
                 if ($roleName == 'delivery_boy') {
+                    // Block login if not approved (is_approved = 0 or 2)
+                    $isApproved = $user->is_approved ?? 0;
+                    if ($isApproved != 1) {
+                        if ($isApproved == 2) {
+                            return response()->json([
+                                'errors' => [
+                                    'status' => ['Votre compte a été rejeté par l\'administrateur.']
+                                ]
+                            ], 422);
+                        }
+                        return response()->json([
+                            'errors' => [
+                                'status' => ['Votre compte est en attente d\'approbation par l\'administrateur.']
+                            ]
+                        ], 422);
+                    }
                     if ($user->status != 1) {
                         return response()->json([
                             'errors' => [

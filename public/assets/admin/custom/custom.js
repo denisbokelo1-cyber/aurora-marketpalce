@@ -4984,6 +4984,97 @@ $(document).on("change", "#deliverable_type", function () {
 });
 
 // Initialize deliverable zones state on page load
+// ============================================================
+// DELIVERY BOY APPROVE / REJECT HANDLERS
+// ============================================================
+$(document).on("click", ".approve-delivery-boy", function (e) {
+    e.preventDefault();
+    var id = $(this).data("id");
+    var url = appUrl + "admin/delivery_boy/approve/" + id;
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want to approve this delivery boy?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, approve!",
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                    dataType: "json",
+                })
+                .done(function (response) {
+                    if (response.error === false || response.message) {
+                        Swal.fire("Approved!", response.message, "success");
+                        $(".table").bootstrapTable("refresh");
+                    } else {
+                        Swal.fire("Error", response.message || "Something went wrong", "error");
+                    }
+                })
+                .fail(function (jqXHR) {
+                    var msg = "Something went wrong!";
+                    if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                        msg = jqXHR.responseJSON.message;
+                    }
+                    Swal.fire("Error", msg, "error");
+                });
+            });
+        },
+        allowOutsideClick: false,
+    });
+});
+
+$(document).on("click", ".reject-delivery-boy", function (e) {
+    e.preventDefault();
+    var id = $(this).data("id");
+    var url = appUrl + "admin/delivery_boy/reject/" + id;
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want to reject this delivery boy?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Yes, reject!",
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                    dataType: "json",
+                })
+                .done(function (response) {
+                    if (response.error === false || response.message) {
+                        Swal.fire("Rejected!", response.message, "success");
+                        $(".table").bootstrapTable("refresh");
+                    } else {
+                        Swal.fire("Error", response.message || "Something went wrong", "error");
+                    }
+                })
+                .fail(function (jqXHR) {
+                    var msg = "Something went wrong!";
+                    if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                        msg = jqXHR.responseJSON.message;
+                    }
+                    Swal.fire("Error", msg, "error");
+                });
+            });
+        },
+        allowOutsideClick: false,
+    });
+});
+
 $(document).ready(function () {
     if ($("#deliverable_type").length) {
         toggleDeliverableZones($("#deliverable_type").val());

@@ -32,6 +32,8 @@ class Deliveryboy extends Model implements HasMedia
         'active',
         'disk',
         'is_available',
+        'is_approved',
+        'approval_status',
     ];
 
     public function registerMediaCollections(): void
