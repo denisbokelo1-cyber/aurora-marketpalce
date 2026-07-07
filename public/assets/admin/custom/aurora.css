@@ -785,6 +785,266 @@ select.aurora-input { appearance: none; background-image: url("data:image/svg+xm
     .aurora-stats { grid-template-columns: 1fr; }
 }
 
+/* =============================================
+   VALIDATION & PLACEHOLDER IMAGE
+   ============================================= */
+.aurora-placeholder-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    color: #94a3b8;
+    font-size: 13px;
+    border-radius: 8px;
+    min-height: 60px;
+}
+.aurora-placeholder-img i {
+    font-size: 24px;
+    opacity: 0.5;
+}
+
+/* =============================================
+   ADMIN RESPONSIVE ENHANCEMENTS
+   Mobile-First | All Breakpoints
+   ============================================= */
+
+/* ── 1200-1399px ── */
+@media (max-width: 1399px) {
+    .aurora-header-search { width: 260px; }
+    .aurora-main { padding: 20px 24px; }
+    .aurora-card-body { padding: 16px 20px; }
+    .aurora-card-header { padding: 14px 20px; }
+}
+
+/* ── 992-1199px ── */
+@media (max-width: 1199px) {
+    .aurora-header-search { width: 220px; }
+    .aurora-main { padding: 18px 20px; }
+    .aurora-form-grid.cols-4 { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── 768-991px (Tablet) ── */
+@media (max-width: 991px) {
+    .aurora-header-search { width: 180px; }
+    .aurora-main { padding: 16px; }
+    .aurora-stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .aurora-stat-card { padding: 16px; }
+    .aurora-stat-card-value { font-size: 22px; }
+    .aurora-table th, .aurora-table td { padding: 10px 12px; }
+    .aurora-table th { font-size: 10px; }
+    .aurora-table td { font-size: 13px; }
+    .aurora-card-body { padding: 14px 16px; }
+    .aurora-card-header { padding: 12px 16px; }
+    .aurora-card-header h3 { font-size: 14px; }
+    .aurora-charts { grid-template-columns: 1fr; }
+    .aurora-chart-container { height: 220px; }
+    .aurora-tabs { overflow-x: auto; flex-wrap: nowrap; }
+    .aurora-tab { white-space: nowrap; padding: 8px 14px; font-size: 12px; }
+    .aurora-modal { max-width: 90vw; }
+    .aurora-modal-body { padding: 16px; }
+    .aurora-modal-header { padding: 12px 16px; }
+    .aurora-btn { padding: 7px 14px; font-size: 13px; }
+    .aurora-form-grid { gap: 12px; }
+    .aurora-table-toolbar { gap: 6px; }
+    .aurora-toolbar-btn { padding: 4px 8px; font-size: 12px; }
+}
+
+/* ── 639px and below (Mobile) ── */
+@media (max-width: 639px) {
+    .aurora-header { padding: 0 10px; }
+    .aurora-header-left { gap: 10px; }
+    .aurora-header-search { width: 140px; }
+    .aurora-header-profile .info { display: none !important; }
+    .aurora-main { padding: 12px; }
+    
+    /* Stats */
+    .aurora-stats { grid-template-columns: 1fr; gap: 10px; }
+    .aurora-stat-card { padding: 14px; }
+    .aurora-stat-card-value { font-size: 20px; }
+    .aurora-stat-card-label { font-size: 12px; }
+    
+    /* Tables - make them scroll horizontally */
+    .aurora-table-wrapper { overflow-x: auto; margin: 0 -4px; }
+    .aurora-table { min-width: 600px; }
+    .aurora-table th, .aurora-table td { padding: 8px 10px; font-size: 12px; }
+    
+    /* Cards */
+    .aurora-card-body { padding: 12px; }
+    .aurora-card-header { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
+    .aurora-card-footer { padding: 10px 12px; flex-wrap: wrap; justify-content: center; }
+    
+    /* Page header */
+    .aurora-page-header h1 { font-size: 20px; }
+    .aurora-page-header p { font-size: 13px; }
+    
+    /* Forms */
+    .aurora-form-grid, .aurora-form-grid.cols-3, .aurora-form-grid.cols-4 {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .aurora-form-section-title { font-size: 13px; margin-bottom: 12px; }
+    .aurora-field label { font-size: 12px; }
+    .aurora-input { padding: 7px 12px; font-size: 13px; }
+    
+    /* Buttons */
+    .aurora-btn { padding: 6px 12px; font-size: 12px; }
+    .aurora-btn-sm { padding: 4px 8px; font-size: 11px; }
+    .aurora-btn-lg { padding: 10px 20px; font-size: 14px; }
+    
+    /* Modals */
+    .aurora-modal-overlay { padding: 12px; align-items: flex-end; }
+    .aurora-modal { max-width: 100%; max-height: 85vh; border-radius: 12px 12px 0 0; }
+    .aurora-modal-sm { max-width: 100%; }
+    .aurora-modal-header { padding: 12px 16px; }
+    .aurora-modal-header h3 { font-size: 15px; }
+    .aurora-modal-body { padding: 14px 16px; }
+    .aurora-modal-footer { padding: 10px 16px; flex-wrap: wrap; justify-content: center; }
+    
+    /* Alerts */
+    .aurora-alert { padding: 10px 12px; font-size: 12px; }
+    
+    /* Tabs */
+    .aurora-tabs { overflow-x: auto; }
+    .aurora-tab { padding: 6px 12px; font-size: 12px; white-space: nowrap; }
+    
+    /* Breadcrumb */
+    .aurora-breadcrumb { font-size: 12px; gap: 4px; flex-wrap: wrap; }
+    
+    /* Dropdowns */
+    .aurora-dropdown-menu { min-width: 160px; right: -10px; }
+    
+    /* Badge */
+    .aurora-badge { padding: 1px 8px; font-size: 11px; }
+    
+    /* Chart */
+    .aurora-chart-container { height: 180px; }
+    
+    /* Toasts */
+    .aurora-toast { width: calc(100vw - 24px); top: 12px; right: 12px; }
+    
+    /* Footer */
+    .aurora-footer { padding: 12px; font-size: 12px; }
+}
+
+/* ── 425px and below ── */
+@media (max-width: 425px) {
+    .aurora-header-search { width: 110px; }
+    .aurora-header-search input { font-size: 12px; padding: 6px 10px 6px 30px; }
+    .aurora-header-btn { width: 34px; height: 34px; font-size: 16px; }
+    .aurora-header-profile { padding: 2px 8px 2px 2px; }
+    .aurora-header-profile img { width: 28px; height: 28px; }
+    .aurora-main { padding: 10px; }
+    .aurora-page-header h1 { font-size: 18px; }
+    .aurora-stat-card-value { font-size: 18px; }
+    .aurora-table th, .aurora-table td { padding: 6px 8px; font-size: 11px; }
+    .aurora-table th { font-size: 9px; }
+}
+
+/* ── 375px and below ── */
+@media (max-width: 375px) {
+    .aurora-header-search { width: 90px; }
+    .aurora-header-search input { font-size: 11px; padding: 5px 8px 5px 26px; }
+    .aurora-header-btn { width: 30px; height: 30px; font-size: 14px; }
+    .aurora-header-profile img { width: 24px; height: 24px; }
+    .aurora-main { padding: 8px; }
+    .aurora-stat-card { padding: 10px; }
+    .aurora-stat-card-value { font-size: 16px; }
+    .aurora-page-header h1 { font-size: 16px; }
+    .aurora-page-header { margin-bottom: 16px; }
+    .aurora-card-body { padding: 10px; }
+    .aurora-card-header { padding: 8px 10px; }
+    .aurora-card-header h3 { font-size: 13px; }
+    .aurora-btn { font-size: 11px; padding: 5px 10px; }
+    .aurora-form-grid { gap: 8px; }
+}
+
+/* ── 320px and below ── */
+@media (max-width: 320px) {
+    .aurora-header-search { width: 70px; }
+    .aurora-main { padding: 6px; }
+    .aurora-stat-card-value { font-size: 14px; }
+    .aurora-table th, .aurora-table td { padding: 4px 6px; font-size: 10px; }
+    .aurora-btn { font-size: 10px; padding: 4px 8px; }
+    .aurora-card-body { padding: 8px; }
+    .aurora-card-header { padding: 6px 8px; }
+}
+
+/* =============================================
+   SIDEBAR ENHANCEMENTS
+   ============================================= */
+/* Mobile sidebar overlay */
+.aurora-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+.aurora-overlay.show { display: block; }
+
+/* Sidebar close button visible only on mobile */
+.aurora-sidebar-close {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 1001;
+}
+@media (max-width: 1023px) {
+    .aurora-overlay.show { display: block; }
+    .aurora-sidebar-close { display: block; }
+}
+
+/* Sidebar mobile menu animation */
+@media (max-width: 1023px) {
+    .aurora-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .aurora-sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+    }
+    .aurora-header { left: 0; }
+    .aurora-header-toggle { display: flex; }
+    .aurora-main { margin-left: 0; }
+}
+
+/* Header toggle always visible on mobile */
+.aurora-header-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--aurora-text);
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* Sidebar item text truncation */
+.aurora-sidebar-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Sidebar logo on mobile */
+@media (max-width: 374px) {
+    .aurora-sidebar-logo { padding: 16px; }
+    .aurora-sidebar-logo span { font-size: 15px; }
+    .aurora-sidebar-item { padding: 8px 14px; font-size: 13px; }
+    .aurora-sidebar-section { padding: 6px 14px 2px; font-size: 9px; }
+}
+
 
 /* =============================================
    IMAGE FIXES — Admin Panel (categories, media)

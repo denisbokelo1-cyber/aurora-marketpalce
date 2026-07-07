@@ -57,6 +57,7 @@
         <link rel="stylesheet" href="{{ asset('frontend/elegant/css/iziToast.css') }}?v={{ $version }}">
         <link rel="stylesheet" href="{{ asset('frontend/elegant/css/daterangepicker.css') }}?v={{ $version }}">
         <link rel="stylesheet" href="{{ asset('frontend/elegant/css/responsive.css') }}?v={{ $version }}">
+        <link rel="stylesheet" href="{{ asset('frontend/elegant/css/responsive-override.css') }}?v={{ $version }}.{{ \Illuminate\Support\Str::random(4) }}">
         <link rel="stylesheet" href="{{ asset('frontend/elegant/css/shareon.min.css') }}?v={{ $version }}">
         <link rel="stylesheet" href="{{ asset('frontend/elegant/css/app.css') }}?v={{ $version }}">
         <link rel="stylesheet" href="{{ asset('assets/admin/css/dropzone.css') }}?v={{ $version }}">
