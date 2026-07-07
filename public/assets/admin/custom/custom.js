@@ -576,11 +576,15 @@ var current_selected_image;
 
 $("#upload-media").on("click", function () {
     var result = $("#media-upload-table").bootstrapTable("getSelections");
+    if (!result || result.length === 0) {
+        iziToast.error({
+            title: "Error",
+            message: "Please select at least one file.",
+            position: "topRight",
+        });
+        return;
+    }
 
-    var path =
-        appUrl + "storage/" + result[0].sub_directory + "/" + result[0].name;
-
-    var sub_directory = result[0].sub_directory + "/" + result[0].name;
     var media_type = $("#media-upload-modal")
         .find('input[name="media_type"]')
         .val();
@@ -597,86 +601,84 @@ $("#upload-media").on("click", function () {
 
     var removable_btn =
         is_removable == "1"
-            ? '<a class="remove-image text-danger"><i class="far fa-trash-alt me-1"></i>Remove</a>'
+            ? '<a class="remove-image text-danger" href="#"><i class="far fa-trash-alt me-1"></i>Remove</a>'
             : "";
 
-    $(current_selected_image)
-        .closest(".form-group")
-        .find(".image")
-        .removeClass("d-none");
+    var $formGroup = $(current_selected_image).closest(".form-group");
+    var $uploadSection = $formGroup.find(".image-upload-section");
+
+    // Show the image container by removing d-none
+    $uploadSection.find(".image").removeClass("d-none");
+
     if (ismultipleAllowed == "1") {
         for (let index = 0; index < result.length; index++) {
             var isPublicDisk = result[index].disk == "public" ? 1 : 0;
-            var imagePath = isPublicDisk
-                ? media_type != "image"
-                    ? appUrl + "assets/admin/images/" + media_type + "-file.png"
-                    : encodeURI(
-                        appUrl +
-                        "storage/" +
-                        result[index].sub_directory +
-                        "/" +
-                        result[index].name,
-                    )
-                : media_type != "image"
-                    ? appUrl + "assets/admin/images/" + media_type + "-file.png"
-                    : result[index].object_url;
+            var subDir = result[index].sub_directory || 'media';
+            var fileName = result[index].name || result[index].file_name;
 
-            var inputImgPath = isPublicDisk
-                ? encodeURI(
-                    result[index].sub_directory + "/" + result[index].name,
-                )
-                : result[index].object_url;
+            // Build the display URL
+            var imageUrl = isPublicDisk
+                ? appUrl + "storage/" + subDir + "/" + fileName
+                : (result[index].object_url || appUrl + "storage/" + subDir + "/" + fileName);
 
-            $(current_selected_image)
-                .closest(".form-group")
-                .find(".image-upload-section")
-                .append(
-                    '<div class="bg-white grow image product-image-container rounded shadow text-center m-2"><div class="image-upload-div"><img class="img-fluid mb-2" alt="' +
-                    result[index].name +
-                    '" title="' +
-                    result[index].name +
-                    '" src="' +
-                    imagePath +
-                    '"><input type="hidden" name="' +
-                    input +
-                    '" value="' +
-                    inputImgPath +
-                    '"><\/div>' +
+            // Build the save path (relative path for DB storage)
+            var savePath = isPublicDisk
+                ? subDir + "/" + fileName
+                : (result[index].object_url || subDir + "/" + fileName);
+
+            $uploadSection.append(
+                '<div class="bg-white grow image product-image-container rounded shadow text-center m-2">' +
+                    '<div class="image-upload-div">' +
+                        '<img class="img-fluid mb-2" alt="' + fileName + '" title="' + fileName + '" src="' + imageUrl + '">' +
+                        '<input type="hidden" name="' + input + '" value="' + savePath + '">' +
+                    '</div>' +
                     removable_btn +
-                    "<\/div>",
-                );
+                '</div>'
+            );
         }
     } else {
         var isPublicDisk = result[0].disk == "public" ? 1 : 0;
-        var imagePath = isPublicDisk
-            ? media_type != "image"
-                ? appUrl + "assets/admin/images/" + media_type + "-file.png"
-                : encodeURI(path)
-            : media_type != "image"
-                ? appUrl + "assets/admin/images/" + media_type + "-file.png"
-                : result[0].object_url;
+        var subDir = result[0].sub_directory || 'media';
+        var fileName = result[0].name || result[0].file_name;
 
-        var inputImgPath = isPublicDisk
-            ? encodeURI(result[0].sub_directory + "/" + result[0].name)
-            : result[0].object_url;
-        $(current_selected_image)
-            .closest(".form-group")
-            .find(".image-upload-section")
-            .html(
-                '<div class="bg-white grow image product-image-container rounded shadow text-center m-2"><div class="image-upload-div"><img class="img-fluid" alt="' +
-                result[0].name +
-                '" title="' +
-                result[0].name +
-                '" src="' +
-                imagePath +
-                '"><input type="hidden" name="' +
-                input +
-                '" value="' +
-                inputImgPath +
-                '"><\/div>' +
+        var imageUrl = isPublicDisk
+            ? appUrl + "storage/" + subDir + "/" + fileName
+            : (result[0].object_url || appUrl + "storage/" + subDir + "/" + fileName);
+
+        var savePath = isPublicDisk
+            ? subDir + "/" + fileName
+            : (result[0].object_url || subDir + "/" + fileName);
+
+        $uploadSection.html(
+            '<div class="bg-white grow image product-image-container rounded shadow text-center m-2">' +
+                '<div class="image-upload-div">' +
+                    '<img class="img-fluid" alt="' + fileName + '" title="' + fileName + '" src="' + imageUrl + '">' +
+                    '<input type="hidden" name="' + input + '" value="' + savePath + '">' +
+                '</div>' +
                 removable_btn +
-                "<\/div>",
-            );
+            '</div>'
+        );
+    }
+
+    // Trigger custom event so category forms can also update their previews
+    if ((input === 'category_image' || input === 'banner') && result.length > 0) {
+        var isPublicDisk = result[0].disk == "public" ? 1 : 0;
+        var subDir = result[0].sub_directory || 'media';
+        var fileName = result[0].name || result[0].file_name;
+
+        var evtImageUrl = isPublicDisk
+            ? appUrl + "storage/" + subDir + "/" + fileName
+            : (result[0].object_url || appUrl + "storage/" + subDir + "/" + fileName);
+
+        var evtSavePath = isPublicDisk
+            ? subDir + "/" + fileName
+            : (result[0].object_url || subDir + "/" + fileName);
+
+        $(document).trigger('media-selected', {
+            input: input,
+            url: evtImageUrl,
+            path: evtSavePath,
+        });
     }
 
     current_selected_image = "";

@@ -462,24 +462,58 @@ class MediaController extends Controller
         $quality = ($quality <= 0 || $quality > 100) ? 75 : $quality;
 
         try {
-            // Validate domain
-            if (strpos($url, $appUrl) === false && strpos($url, $awsBucket) === false) {
+            // Determine if this URL points to the placeholder image
+            $placeholder = asset(Config::get('constants.NO_IMAGE'));
+            $isPlaceholder = (strpos($url, 'no-image.jpg') !== false || strpos($url, 'no-image') !== false || empty($url));
+
+            // Validate domain — placeholder URLs are always allowed
+            if (
+                !$isPlaceholder &&
+                strpos($url, $appUrl) === false &&
+                strpos($url, $awsBucket) === false
+            ) {
+                // If the URL is not local and not S3, still try to serve it as a proxy to avoid broken images
+                // Just return a redirect to the URL itself with proper caching headers
+                if (filter_var($url, FILTER_VALIDATE_URL)) {
+                    return redirect($url);
+                }
                 throw new Exception('Domain is restricted');
             }
 
-            // Convert full URL to local file path if it's a local image
-            if (Str::startsWith($url, $appUrl)) {
-                $relativePath = str_replace($appUrl, '', $url);
+            // Resolve local file path
+            if (Str::startsWith($url, $appUrl) || $url === asset('')) {
+                $relativePath = str_replace($appUrl, '/', $url);
+                $relativePath = ltrim($relativePath, '/');
                 $localPath = public_path($relativePath);
                 if (!file_exists($localPath)) {
-                    throw new Exception('Local file not found');
+                    // Try resolving as placeholder
+                    $placeholderPath = public_path(ltrim(parse_url($placeholder, PHP_URL_PATH), '/'));
+                    if (file_exists($placeholderPath)) {
+                        $imageData = file_get_contents($placeholderPath);
+                        $url = $placeholder; // rewrite url for caching
+                    } else {
+                        // Last resort — return a 1x1 transparent PNG inline
+                        return response(base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='), 200)
+                            ->header('Content-Type', 'image/png')
+                            ->header('Cache-Control', 'public, max-age=31536000');
+                    }
+                } else {
+                    $imageData = file_get_contents($localPath);
                 }
-                $imageData = file_get_contents($localPath);
             } else {
-                // Fallback to remote image (e.g., from S3)
+                // Remote (S3 or external) — download
                 $imageData = @file_get_contents($url);
                 if ($imageData === false) {
-                    throw new Exception('Failed to download image');
+                    // Fallback to placeholder
+                    $placeholderPath = public_path(ltrim(parse_url($placeholder, PHP_URL_PATH), '/'));
+                    if (file_exists($placeholderPath)) {
+                        $imageData = file_get_contents($placeholderPath);
+                        $url = $placeholder;
+                    } else {
+                        return response(base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='), 200)
+                            ->header('Content-Type', 'image/png')
+                            ->header('Cache-Control', 'public, max-age=31536000');
+                    }
                 }
             }
 
@@ -522,8 +556,6 @@ class MediaController extends Controller
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
-                // Progressive JPEG / interlaced PNG renders top-to-bottom in
-                // the browser, so users see content sooner.
                 $image->interlace(true);
                 $encodedImage = $image->encode(null, $quality);
             }
@@ -534,7 +566,25 @@ class MediaController extends Controller
                 ->header('Content-Type', $mimeType)
                 ->withHeaders($cacheHeaders);
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            // Graceful fallback — return placeholder or transparent pixel
+            $placeholder = asset(Config::get('constants.NO_IMAGE'));
+            $placeholderPath = public_path(ltrim(parse_url($placeholder, PHP_URL_PATH), '/'));
+            if (file_exists($placeholderPath)) {
+                $imageData = file_get_contents($placeholderPath);
+                $mimeType = $this->getMimeTypeFromContent($imageData) ?: 'image/jpeg';
+                $image = Image::make($imageData);
+                $image->resize($width, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+                return response($image->encode(null, $quality), 200)
+                    ->header('Content-Type', $mimeType)
+                    ->header('Cache-Control', 'public, max-age=86400');
+            }
+            // Ultimate fallback: inline 1x1 transparent PNG
+            return response(base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='), 200)
+                ->header('Content-Type', 'image/png')
+                ->header('Cache-Control', 'public, max-age=86400');
         }
     }
 

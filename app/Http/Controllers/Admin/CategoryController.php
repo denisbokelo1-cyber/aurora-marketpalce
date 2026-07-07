@@ -499,19 +499,17 @@ class CategoryController extends Controller
 
 
 
-            // Format 'image' and 'banner' fields with HTML tags
-            $image = route('admin.dynamic_image', [
-                'url' => app(MediaService::class)->getMediaImageUrl($c->image),
-                'width' => 60,
-                'quality' => 90
-            ]);
-            $banner = route('admin.dynamic_image', [
-                'url' => app(MediaService::class)->getMediaImageUrl($c->banner),
-                'width' => 60,
-                'quality' => 90
-            ]);
-            $image = '<div class="d-flex justify-content-around"><a href="' . app(MediaService::class)->getMediaImageUrl($c->image) . '" data-lightbox="image-' . $c->id . '"><img src="' . $image . '" alt="Avatar" class="rounded"/></a></div>';
-            $banner = '<div><a href="' . app(MediaService::class)->getMediaImageUrl($c->banner) . '" data-lightbox="banner-' . $c->id . '"><img src="' . $banner . '" alt="Avatar" class="rounded"/></a></div>';
+            // Format 'image' and 'banner' fields with professional placeholders
+            $imageUrl = app(MediaService::class)->getMediaImageUrl($c->image);
+            $bannerUrl = app(MediaService::class)->getMediaImageUrl($c->banner);
+            $image = '<div class="d-flex justify-content-around">'
+                . '<a href="' . $imageUrl . '" data-lightbox="image-' . $c->id . '">'
+                . '<img src="' . $imageUrl . '" alt="Category" class="rounded category-table-img" loading="lazy" onerror="this.onerror=null;this.src=\'' . asset('assets/img/no-image.jpg') . '\'"/>'
+                . '</a></div>';
+            $banner = '<div>'
+                . '<a href="' . $bannerUrl . '" data-lightbox="banner-' . $c->id . '">'
+                . '<img src="' . $bannerUrl . '" alt="Banner" class="rounded category-table-banner" loading="lazy" onerror="this.onerror=null;this.src=\'' . asset('assets/img/no-image.jpg') . '\'"/>'
+                . '</a></div>';
 
             // Format 'operate' field with dropdown menu HTML
             $action = '<div class="dropdown bootstrap-table-dropdown">

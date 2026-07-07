@@ -784,3 +784,133 @@ select.aurora-input { appearance: none; background-image: url("data:image/svg+xm
 @media (max-width: 639px) {
     .aurora-stats { grid-template-columns: 1fr; }
 }
+
+
+/* =============================================
+   IMAGE FIXES — Admin Panel (categories, media)
+   ============================================= */
+/* Category table images - consistent sizing */
+.category-table-img,
+.category-table-banner {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+.category-table-banner {
+    width: 100px;
+    height: 60px;
+}
+
+/* Image preview containers */
+.image-upload-div {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    background: #f8fafc;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.image-upload-div img {
+    max-width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+}
+
+.image-upload-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.image-upload-section .image {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+    position: relative;
+    min-width: 120px;
+    max-width: 180px;
+}
+.image-upload-section .image .image-upload-div img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* File upload box trigger */
+.file_upload_box {
+    cursor: pointer;
+    padding: 16px;
+    text-align: center;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 2px dashed #e2e8f0 !important;
+    transition: all 0.2s ease;
+    min-width: 140px;
+}
+.file_upload_box:hover {
+    background: #fff7ed;
+    border-color: #f97316 !important;
+}
+.file_upload_box h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+}
+.file_upload_box:hover h4 {
+    color: #f97316;
+}
+
+/* Remove image button */
+.remove-image {
+    font-size: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+.remove-image:hover {
+    background: #fef2f2;
+    color: #dc2626 !important;
+}
+
+/* Media card image */
+.media-image-box {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border-radius: 8px 8px 0 0;
+}
+.media-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Responsive image containers */
+@media (max-width: 768px) {
+    .image-upload-section .image {
+        min-width: 80px;
+        max-width: 120px;
+    }
+    .category-table-img,
+    .category-table-banner {
+        width: 40px;
+        height: 40px;
+    }
+    .category-table-banner {
+        width: 60px;
+    }
+}
